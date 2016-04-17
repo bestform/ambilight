@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "TCg5S+lEM4bahBHL2MLqdv1nKGI=",
+			"path": "github.com/bestform/gohue",
+			"revision": "39c325fa4fa25b51e00ac0e5afa23dbf0465e824",
+			"revisionTime": "2016-01-02T21:14:07Z"
+		},
+		{
+			"checksumSHA1": "6/aafZ9NdDUFoy4iNDwmd8Mi2TA=",
+			"path": "github.com/bestform/imagecolor",
+			"revision": "54c197327028092324ed64d772992e4eb491a5c8",
+			"revisionTime": "2016-04-16T15:52:56Z"
+		},
+		{
+			"checksumSHA1": "pt+50GQPEm18sOYiL1yNwPdCecE=",
+			"path": "github.com/fsnotify/fsnotify",
+			"revision": "836bfd95fecc0f1511dd66bdbf2b5b61ab8b00b6",
+			"revisionTime": "2016-04-13T22:32:47Z"
+		}
+	],
+	"rootPath": "ambilight"
+}
