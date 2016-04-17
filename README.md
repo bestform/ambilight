@@ -1,7 +1,7 @@
 Gaming Ambilight
 ================
 
-This project is set up to watch a folder and from every jpeg that is written to that folder create an average light color and send it
+This project is set up to watch a folder and from every jpeg that is written to that folder, create an average light color and send it
 to a configured Philips Hue.
 
 The plan is to watch a screenshot folder and let an addon populate the folder with a new screenshot every x seconds.
@@ -21,4 +21,4 @@ Vendored dependencies
 ---------------------
 
 All dependencies that are not part of the standard library are vendored using govendor (https://github.com/kardianos/govendor)
-They are already part of the repository, but to use them, you either need to use at least go1.6. If you are on go1.5, please set the environment variable GO15VENDOREXPERIMENT to 1.
+They are already part of the repository, but to use them, you either need to use at least go1.6 or - if you are on go1.5 - please set the environment variable GO15VENDOREXPERIMENT to 1.
