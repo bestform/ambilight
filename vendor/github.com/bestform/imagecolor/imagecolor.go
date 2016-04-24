@@ -3,7 +3,6 @@ package imagecolor
 import (
 	"image"
 	_ "image/jpeg" // @todo: currently only jpegs are supported. This is kind of awkward. But dynamic imports aren't possible
-	"log"
 	"os"
 )
 
@@ -16,16 +15,16 @@ func NewImagecolor(path string) Imagecolor {
 	return Imagecolor{path, 10} // @todo: make precision more easily configurable. At the moment, 10 as a default is ok
 }
 
-func (i Imagecolor) AverageColor() (int, int, int) {
+func (i Imagecolor) AverageColor() (int, int, int, error) {
 	reader, err := os.Open(i.path)
 	if err != nil {
-		log.Fatal(err)
+		return 0, 0, 0, err
 	}
 	defer reader.Close()
 
 	m, _, err := image.Decode(reader)
 	if err != nil {
-		log.Fatal(err)
+		return 0, 0, 0, err
 	}
 	bounds := m.Bounds()
 
@@ -47,7 +46,7 @@ func (i Imagecolor) AverageColor() (int, int, int) {
 	xg := averageTo255(pixels, g)
 	xb := averageTo255(pixels, b)
 
-	return int(xr), int(xg), int(xb)
+	return int(xr), int(xg), int(xb), nil
 
 }
 

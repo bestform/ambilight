@@ -67,10 +67,13 @@ func sendColorFromFile(filename, username, ip string) {
 		return
 	}
 	i := imagecolor.NewImagecolor(filename)
-	r, g, b := i.AverageColor()
+	r, g, b, err := i.AverageColor()
+	if err != nil {
+		log.Println("error: ", err)
+	}
 
 	client := gohue.NewClient(username, ip)
-	err := client.Connect() // @todo: this should really just connect once and wait for colors on a channel
+	err = client.Connect() // @todo: this should really just connect once and wait for colors on a channel
 	if err != nil {
 		log.Fatal(err)
 	}
