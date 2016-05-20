@@ -6,7 +6,7 @@ to a configured Philips Hue.
 
 The plan is to watch a screenshot folder and let an addon populate the folder with a new screenshot every x seconds.
 
-At this point, neither the addon, nor deleting the screenshots after they have been used, is implemented yet.
+At this point, the addon is not implemented yet.
 BUT: you can already watch the folder and take screenshots manually. Every screenshot will change the light of your lamp to the current average color in your game.
 
 To do so, start the tool with the following flags:
