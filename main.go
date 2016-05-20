@@ -4,7 +4,6 @@ import (
 	"flag"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/bestform/imagecolor"
 
@@ -76,10 +75,6 @@ func main() {
 }
 
 func sendColorFromFile(filename string, client *gohue.Client) {
-	if !isJpeg(filename) {
-		log.Println("no jpeg!")
-		return
-	}
 	i := imagecolor.NewImagecolor(filename)
 	r, g, b, err := i.AverageColor()
 	if err != nil {
@@ -89,13 +84,4 @@ func sendColorFromFile(filename string, client *gohue.Client) {
 	for _, light := range (*client).GetLights() {
 		light.SetColorRGB(r, g, b)
 	}
-}
-
-// @note: this is kind of crude, but the fastest way to sort out unwanted things. We could wait until the image package
-// reads the header and knows, if it can parse the content, but I prefer to avoid feeding it wrong data in the first place
-func isJpeg(filename string) bool {
-	return strings.HasSuffix(filename, ".jpg") ||
-		strings.HasSuffix(filename, ".JPG") ||
-		strings.HasSuffix(filename, ".jpeg") ||
-		strings.HasSuffix(filename, ".JPEG")
 }
