@@ -35,6 +35,12 @@ func main() {
 
 	log.Println("Watching ", *pathPtr)
 
+	client := gohue.NewClient(*usernamePtr, *ipPtr)
+	err := client.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
@@ -49,7 +55,7 @@ func main() {
 			case event := <-watcher.Events:
 				if event.Op&fsnotify.Create == fsnotify.Create {
 					log.Println("create: ", event.Name)
-					sendColorFromFile(event.Name, *usernamePtr, *ipPtr)
+					sendColorFromFile(event.Name, &client)
 					if *deleteAfterProcessing {
 						log.Println("deleting: ", event.Name)
 						os.Remove(event.Name)
@@ -69,7 +75,7 @@ func main() {
 	<-done
 }
 
-func sendColorFromFile(filename, username, ip string) {
+func sendColorFromFile(filename string, client *gohue.Client) {
 	if !isJpeg(filename) {
 		log.Println("no jpeg!")
 		return
@@ -80,13 +86,7 @@ func sendColorFromFile(filename, username, ip string) {
 		log.Println("error: ", err)
 	}
 
-	client := gohue.NewClient(username, ip)
-	err = client.Connect() // @todo: this should really just connect once and wait for colors on a channel
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, light := range client.GetLights() {
+	for _, light := range (*client).GetLights() {
 		light.SetColorRGB(r, g, b)
 	}
 }
