@@ -23,12 +23,14 @@ func main() {
 	if "" == *pathPtr {
 		log.Fatal("Please provide a path to watch")
 	}
-	// @todo: maybe check here, if the path exists and exit if this is not the case
 	if "" == *usernamePtr {
 		log.Fatal("Please provide a username")
 	}
 	if "" == *ipPtr {
 		log.Fatal("Please provide an ip")
+	}
+	if _, err := os.Stat(*pathPtr); err != nil {
+		log.Fatalf("Path %s does not exist. Exiting.", *pathPtr)
 	}
 
 	log.Println("Watching ", *pathPtr)
