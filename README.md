@@ -17,6 +17,10 @@ To do so, start the tool with the following flags:
 
 Then just play the game and take a screenshot whenever you feel like it
 
+If you want to delete every image after it has been processed, just add the option
+
+--delete
+
 Vendored dependencies
 ---------------------
 

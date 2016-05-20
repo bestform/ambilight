@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/bestform/imagecolor"
@@ -16,6 +17,7 @@ func main() {
 	pathPtr := flag.String("path", "", "The path to the WoW screenshot folder")
 	usernamePtr := flag.String("username", "", "The username for your phillips hue network")
 	ipPtr := flag.String("ip", "", "The ip for your philips hue network")
+	deleteAfterProcessing := flag.Bool("delete", false, "Delete the image after it has been processed")
 	flag.Parse()
 
 	if "" == *pathPtr {
@@ -46,6 +48,10 @@ func main() {
 				if event.Op&fsnotify.Create == fsnotify.Create {
 					log.Println("create: ", event.Name)
 					sendColorFromFile(event.Name, *usernamePtr, *ipPtr)
+					if *deleteAfterProcessing {
+						log.Println("deleting: ", event.Name)
+						os.Remove(event.Name)
+					}
 				}
 			case err := <-watcher.Errors:
 				log.Println("error:", err)
