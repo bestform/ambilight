@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"time"
 
 	"github.com/bestform/imagecolor"
 
@@ -53,7 +54,20 @@ func main() {
 			select {
 			case event := <-watcher.Events:
 				if event.Op&fsnotify.Create == fsnotify.Create {
-					log.Println("create: ", event.Name)
+					var err error
+					for {
+						var isChanging bool
+						isChanging, err = fileSizeIsChanging(event.Name, time.Duration(30)*time.Millisecond)
+						if err != nil || !isChanging {
+							break
+						}
+						log.Println("Waiting for file to be written...")
+					}
+					if err != nil {
+						log.Println(err)
+						break
+					}
+					log.Println("Reading color from: ", event.Name)
 					sendColorFromFile(event.Name, &client)
 					if *deleteAfterProcessing {
 						log.Println("deleting: ", event.Name)
@@ -72,6 +86,21 @@ func main() {
 	}
 
 	<-done
+}
+
+func fileSizeIsChanging(f string, d time.Duration) (bool, error) {
+	fileInfo, err := os.Stat(f)
+	if err != nil {
+		return false, err
+	}
+	startSize := fileInfo.Size()
+	time.Sleep(d)
+	fileInfo, err = os.Stat(f)
+	if err != nil {
+		return false, err
+	}
+
+	return startSize != fileInfo.Size(), nil
 }
 
 func sendColorFromFile(filename string, client *gohue.Client) {
